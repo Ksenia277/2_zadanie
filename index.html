@@ -13,19 +13,55 @@
 <body>
 <div id="new">
             <form class="cardForm" @submit.prevent="addCard">
+                <p>
+                    <label for="GroupName">Название карточки :</label>
+                    <input id="GroupName" v-model="groupName" placeholder="Name of the card">
+                </p>
+                <p>
+                    <label for="InputOne">1 пункт:</label>
+                    <input id="InputOne" v-model="inputOne" placeholder="Write down a note ">
+                </p>
+                <p>
+                    <label for="InputTwo">2 пункт:</label>
+                    <input id="InputTwo" v-model="inputTwo" placeholder="Write down a note  ">
+                </p>
+                <p>
+                    <label for="InputThr">3 пункт:</label>
+                    <input id="InputThr" v-model="inputThr" placeholder="Write down a note ">
+                </p>
+                <p>
+                    <label for="InputFor">4 пункт:</label>
+                    <input id="InputFor" v-model="inputFor" placeholder="Write down a note ">
+                </p>
+                <p>
+                    <label for="InputFiv">5 пункт:</label>
+                    <input id="InputFiv" v-model="inputFiv" placeholder="Write down a note ">
+                </p>
+                <p>
+                    <input type="submit" value="Создать новую карточку">
+                </p>
             </form>
-        </div>
-    <div class="columns" style="display: flex; justify-content: space-evenly; ">
-        <div class="column">
-            <h2>0%</h2>
         </div>
         <div class="column">
             <h2>50%</h2>
+            <div class="card" v-for="group in secondColumn" :key="group.id">
+                <h3>{{group.groupName}}</h3>
+                <ul>
+
+                </ul>
+            </div>
         </div>
         <div class="column">
             <h2>100%</h2>
+            <div v-for="group in thirdColumn" :key="group.id">
+                <div class="card">
+                    <h3>{{ group.groupName }}</h3>
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
 <script src="./js/main.js"></script>
 </body>
 </html>
