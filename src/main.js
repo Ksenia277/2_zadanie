@@ -1,11 +1,27 @@
-import './assets/main.css'
+const storageKey = 'new';
 
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+const storageData = localStorage.getItem(storageKey);
 
-const app = createApp(App)
+const initialData = storageData ? JSON.parse(storageData) : {
+    firstColumn: [],
+    secondColumn: [],
+    thirdColumn: []
+};
 
-app.use(router)
-
-app.mount('#app')
+let app = new Vue({
+    el: '#new',
+    data: {
+        firstColumn: initialData.firstColumn,
+        secondColumn: initialData.secondColumn,
+    },
+    watch: {
+        secondColumn: {
+        },
+        thirdColumn: {
+        }
+    },
+    methods: {
+    },
+    mounted() {
+    }
+});

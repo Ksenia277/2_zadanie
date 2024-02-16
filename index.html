@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script defer src="/src/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+    <link rel="stylesheet" href="src/assets/main.css">
+    <title>Todo App</title>
+</head>
+<body>
+<div id="new">
+            <form class="cardForm" @submit.prevent="addCard">
+            </form>
+        </div>
+    <div class="columns" style="display: flex; justify-content: space-evenly; ">
+        <div class="column">
+            <h2>0%</h2>
+        </div>
+        <div class="column">
+            <h2>50%</h2>
+        </div>
+        <div class="column">
+            <h2>100%</h2>
+        </div>
+    </div>
+<script src="./js/main.js"></script>
+</body>
 </html>
