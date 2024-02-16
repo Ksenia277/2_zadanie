@@ -43,11 +43,22 @@ let app = new Vue({
         }
     },
     methods: {
-
+        saveKanbanData() {
+            const data = {
+                todoColumn: this.todoColumn,
+                inProgressColumn: this.inProgressColumn,
+                doneColumn: this.doneColumn
+            };
+            localStorage.setItem(kanbanStorageKey, JSON.stringify(data));
+        },
         updateCardProgress(card) {
             const checkedCount = card.items.filter(item => item.checked).length;
             const progress = (checkedCount / card.items.length) * 100;
             card.isComplete = progress === 100;
+
+            if (card.isComplete) {
+                card.lastChecked = new Date().toLocaleString();
+            }
 
             if (progress >= 50 && !card.isComplete) {
                 this.moveCardBetweenColumns(card, this.firstColumn, this.secondColumn);
@@ -74,6 +85,31 @@ let app = new Vue({
                 }
             }
         },
+        disableCheckboxes(card) {
+            card.items.forEach(item => {
+                item.checked = true;
+            });
+        },
+        validateForm() {
+            this.errors = [];
+            if (!this.groupName) {
+                this.errors.push('Пожалуйста, введите название карточки.');
+            }
+            if (!this.inputOne || !this.inputTwo || !this.inputThr || !this.inputFor) {
+                this.errors.push('Пожалуйста, заполните все заметки.');
+            }
+            if (!this.inputFiv) {
+                this.errors.push('Пожалуйста, заполните все заметки.');
+            }
+            return this.errors.length === 0;
+        },
+        clearForm() {
+            this.groupName = null;
+            this.inputOne = null;
+            this.inputTwo = null;
+            this.inputThr = null;
+            this.inputFor = null;
+        }
 
     },
 });
