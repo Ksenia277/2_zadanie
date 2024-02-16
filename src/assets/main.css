@@ -1,35 +1,85 @@
-@import './base.css';
 
-#app {
-  max-width: 1280px;
+.title {
+  text-align: center;
+  color: #333;
+  padding: 20px 0;
+}
+.cardForm {
+  max-width: 600px;
   margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+.cardForm p {
+  margin-bottom: 15px;
+}
+.cardForm label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+.cardForm input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.cardForm input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.columns {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+.column {
+  flex: 1;
+  margin: 0 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+}
+.column-header {
+  text-align: center;
+  background-color: #f8f8f8;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 5px 5px 0 0;
+}
+.card {
+  background-color: #f9f9f9;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.card h3 {
+  margin-top: 0;
+}
+.card ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.card ul li {
+  margin-bottom: 10px;
+}
+.card button {
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-}
