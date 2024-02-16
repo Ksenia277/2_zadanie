@@ -85,6 +85,48 @@ let app = new Vue({
                 }
             }
         },
+        createCard() {
+            if (this.validateForm()) {
+                const newGroup = {
+                    id: Date.now(),
+                    groupName: this.groupName,
+                    items: [
+                        { text: this.inputOne, checked: false },
+                        { text: this.inputTwo, checked: false },
+                        { text: this.inputThr, checked: false },
+                        { text: this.inputFor, checked: false },
+                        { text: this.inputFiv, checked: false },
+                    ],
+                    lastChecked: new Date().toLocaleString(),
+                    isDisabled: false
+                };
+
+                const cardsWithZeroProgress = this.firstColumn.filter(card => {
+                    const checkedCount = card.items.filter(item => item.checked).length;
+                    const progress = (checkedCount / card.items.length) * 100;
+                    return progress === 0;
+                });
+
+                const cardsWithFiftyProgress = this.secondColumn.filter(card => {
+                    const checkedCount = card.items.filter(item => item.checked).length;
+                    const progress = (checkedCount / card.items.length) * 100;
+                    return progress === 50;
+                });
+
+                if (cardsWithZeroProgress.length < 3 && this.firstColumn.length < 3) {
+                    this.firstColumn.push(newGroup);
+                    this.clearForm();
+                } else if (cardsWithFiftyProgress.length >= 5) {
+
+                    this.firstColumn.forEach(card => {
+                        card.isDisabled = true;
+                    });
+                    this.errors.push('Во втором столбце не может быть больше 5 карточек с прогрессом 50%.');
+                } else {
+                    this.errors.push('В первом столбце не может быть больше 3 карточек.');
+                }
+            }
+        },
         disableCheckboxes(card) {
             card.items.forEach(item => {
                 item.checked = true;
