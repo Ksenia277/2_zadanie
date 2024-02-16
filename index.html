@@ -11,8 +11,8 @@
     <title>Todo App</title>
 </head>
 <body>
-<div id="new">
-            <form class="cardForm" @submit.prevent="addCard">
+<div id="kanbanBoard">
+            <form class="cardForm" @submit.prevent="createCard">
                 <p>
                     <label for="GroupName">Название карточки :</label>
                     <input id="GroupName" v-model="groupName" placeholder="Name of the card">
@@ -42,26 +42,49 @@
                 </p>
             </form>
         </div>
+    </div>
+    <div class="columns" style="display: flex; justify-content: space-evenly; ">
+        <div class="column">
+            <h2>0%</h2>
+            <div class="card" v-for="card in todoColumn" :key="card.id">
+                <h3>{{ card.groupName }}</h3>
+                <ul>
+                    <li v-for="item in card.items" :key="item.id">
+                        <input type="checkbox" v-model="item.checked" @change="updateCardProgress(card)">
+                        {{ item.text }}
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="column">
             <h2>50%</h2>
-            <div class="card" v-for="group in secondColumn" :key="group.id">
-                <h3>{{group.groupName}}</h3>
+            <div class="card" v-for="card in inProgressColumn" :key="card.id">
+                <h3>{{ card.groupName }}</h3>
                 <ul>
-
+                    <li v-for="item in card.items" :key="item.id">
+                        <input type="checkbox" v-model="item.checked" @change="updateCardProgress(card)">
+                        {{ item.text }}
+                    </li>
                 </ul>
             </div>
         </div>
         <div class="column">
             <h2>100%</h2>
-            <div v-for="group in thirdColumn" :key="group.id">
+            <div v-for="card in doneColumn" :key="card.id">
                 <div class="card">
-                    <h3>{{ group.groupName }}</h3>
+                    <h3>{{ card.groupName }}</h3>
                     <ul>
-
+                        <li v-for="item in card.items" :key="item.id">
+                            <input type="checkbox" v-model="item.checked">
+                            {{ item.text }}
+                        </li>
                     </ul>
+                    <p v-if="card.lastChecked">{{ card.lastChecked }}</p>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 <script src="./js/main.js"></script>
 </body>
 </html>
