@@ -12,6 +12,9 @@
 </head>
 <body>
 <div id="kanbanBoard">
+    <button @click="isModalOpen = true">Добавить карточку</button>
+    <div v-bind:class="{ 'open': isModalOpen }" class="modal">
+        <div class="modal-content">
             <form class="cardForm" @submit.prevent="createCard">
                 <p>
                     <label for="GroupName">Название карточки :</label>
@@ -80,6 +83,7 @@
                         </li>
                     </ul>
                     <p v-if="card.lastChecked">{{ card.lastChecked }}</p>
+                    <button @click="deleteCard(index)">Удалить карточку</button>
                 </div>
             </div>
         </div>

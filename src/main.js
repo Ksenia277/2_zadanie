@@ -61,17 +61,25 @@ let app = new Vue({
             }
 
             if (progress >= 50 && !card.isComplete) {
+
                 this.moveCardBetweenColumns(card, this.firstColumn, this.secondColumn);
             } else if (card.isComplete && this.secondColumn.includes(card)) {
+
                 this.moveCardBetweenColumns(card, this.secondColumn, this.thirdColumn);
             }
+
             if (progress === 0 && this.secondColumn.length < 5) {
+
                 this.moveCardBetweenColumns(card, this.firstColumn, this.secondColumn);
             }
+        },
+        deleteCard(index) {
+            this.thirdColumn.splice(index, 1);
         },
         moveCardBetweenColumns(card, fromColumn, toColumn) {
             const index = fromColumn.findIndex(c => c.id === card.id);
             if (index !== -1) {
+
                 if (toColumn === this.secondColumn && this.secondColumn.length >= 5) {
                     alert('Во втором столбце не может быть больше 5 карточек.');
                     return;
@@ -85,6 +93,14 @@ let app = new Vue({
                 }
             }
         },
+
+        disableCheckboxes(card) {
+
+            card.items.forEach(item => {
+                item.checked = true;
+            });
+        },
+
         createCard() {
             if (this.validateForm()) {
                 const newGroup = {
@@ -127,11 +143,6 @@ let app = new Vue({
                 }
             }
         },
-        disableCheckboxes(card) {
-            card.items.forEach(item => {
-                item.checked = true;
-            });
-        },
         validateForm() {
             this.errors = [];
             if (!this.groupName) {
@@ -152,6 +163,8 @@ let app = new Vue({
             this.inputThr = null;
             this.inputFor = null;
         }
-
     },
+    mounted() {
+        // this.checkBlockColumn();
+    }
 });
