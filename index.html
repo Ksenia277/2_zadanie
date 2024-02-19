@@ -11,11 +11,11 @@
     <title>Todo App</title>
 </head>
 <body>
-<div id="kanbanBoard">
-    <button @click="isModalOpen = true">Добавить карточку</button>
-    <div v-bind:class="{ 'open': isModalOpen }" class="modal">
+<div id="new">
+    <button id="addCardButton" @click="openModal">Добавить карточку</button>
+    <div v-bind:class="{ 'open': showModal }" class="modal">
         <div class="modal-content">
-            <form class="cardForm" @submit.prevent="createCard">
+            <form class="cardForm" @submit.prevent="addNewTaskCard">
                 <p>
                     <label for="GroupName">Название карточки :</label>
                     <input id="GroupName" v-model="groupName" placeholder="Name of the card">
@@ -43,17 +43,18 @@
                 <p>
                     <input type="submit" value="Создать новую карточку">
                 </p>
+                <button @click="showModal = false">Закрыть</button>
             </form>
         </div>
     </div>
     <div class="columns" style="display: flex; justify-content: space-evenly; ">
         <div class="column">
             <h2>0%</h2>
-            <div class="card" v-for="card in todoColumn" :key="card.id">
-                <h3>{{ card.groupName }}</h3>
+            <div class="card" v-for="group in firstColumn" :key="group.id">
+                <h3>{{group.groupName}}</h3>
                 <ul>
-                    <li v-for="item in card.items" :key="item.id">
-                        <input type="checkbox" v-model="item.checked" @change="updateCardProgress(card)">
+                    <li v-for="item in group.items" :key="item.id">
+                        <input type="checkbox" v-model="item.checked" @change="updateTaskProgress(group)">
                         {{ item.text }}
                     </li>
                 </ul>
@@ -61,11 +62,11 @@
         </div>
         <div class="column">
             <h2>50%</h2>
-            <div class="card" v-for="card in inProgressColumn" :key="card.id">
-                <h3>{{ card.groupName }}</h3>
+            <div class="card" v-for="group in secondColumn" :key="group.id">
+                <h3>{{group.groupName}}</h3>
                 <ul>
-                    <li v-for="item in card.items" :key="item.id">
-                        <input type="checkbox" v-model="item.checked" @change="updateCardProgress(card)">
+                    <li v-for="item in group.items" :key="item.id">
+                        <input type="checkbox" v-model="item.checked" @change="updateTaskProgress(group)">
                         {{ item.text }}
                     </li>
                 </ul>
@@ -73,17 +74,17 @@
         </div>
         <div class="column">
             <h2>100%</h2>
-            <div v-for="card in doneColumn" :key="card.id">
+            <div v-for="group in thirdColumn" :key="group.id">
                 <div class="card">
-                    <h3>{{ card.groupName }}</h3>
+                    <h3>{{ group.groupName }}</h3>
                     <ul>
-                        <li v-for="item in card.items" :key="item.id">
+                        <li v-for="item in group.items" :key="item.id">
                             <input type="checkbox" v-model="item.checked">
                             {{ item.text }}
                         </li>
                     </ul>
-                    <p v-if="card.lastChecked">{{ card.lastChecked }}</p>
-                    <button @click="deleteCard(index)">Удалить карточку</button>
+                    <p v-if="group.lastChecked">{{ group.lastChecked }}</p>
+                    <button @click="removeTaskCard(index)">Удалить карточку</button>
                 </div>
             </div>
         </div>

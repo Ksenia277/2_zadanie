@@ -1,57 +1,64 @@
-const kanbanStorageKey = 'kanbanData';
+const storageKey = 'newStorageKey';
 
-const storageData = localStorage.getItem(kanbanStorageKey);
+const storageData = localStorage.getItem(storageKey);
 
-const initialKanbanData = storageData ? JSON.parse(storageData) : {
-    todoColumn: [],
-    inProgressColumn: [],
-    doneColumn: []
+const initialData = storageData ? JSON.parse(storageData) : {
+    firstColumn: [],
+    secondColumn: [],
+    thirdColumn: []
 };
 
 let app = new Vue({
-    el: '#kanbanBoard',
+    el: '#new',
     data: {
-        todoColumn: initialKanbanData.todoColumn,
-        inProgressColumn: initialKanbanData.inProgressColumn,
-        doneColumn: initialKanbanData.doneColumn,
-        cardTitle: null,
-        itemOne: null,
-        itemTwo: null,
-        itemThree: null,
-        itemFour: null,
-        itemFive: null,
+        firstColumn: initialData.firstColumn,
+        secondColumn: initialData.secondColumn,
+        thirdColumn: initialData.thirdColumn,
+        groupName: null,
+        inputOne: null,
+        inputTwo: null,
+        inputThr: null,
+        inputFor: null,
+        inputFiv: null,
+        showModal: false,
         errors: []
     },
     watch: {
-        todoColumn: {
-            handler(newTodoColumn) {
-                this.saveKanbanData();
+        firstColumn: {
+            handler(newFirstColumn) {
+                this.saveData();
             },
             deep: true
         },
-        inProgressColumn: {
-            handler(newInProgressColumn) {
-                this.saveKanbanData();
+        secondColumn: {
+            handler(newSecondColumn) {
+                this.saveData();
             },
             deep: true
         },
-        doneColumn: {
-            handler(newDoneColumn) {
-                this.saveKanbanData();
+        thirdColumn: {
+            handler(newThirdColumn) {
+                this.saveData();
             },
             deep: true
         }
     },
     methods: {
-        saveKanbanData() {
-            const data = {
-                todoColumn: this.todoColumn,
-                inProgressColumn: this.inProgressColumn,
-                doneColumn: this.doneColumn
-            };
-            localStorage.setItem(kanbanStorageKey, JSON.stringify(data));
+        openModal() {
+            this.showModal = true;
         },
-        updateCardProgress(card) {
+        closeModal() {
+            this.showModal = false;
+        },
+        saveData() {
+            const data = {
+                firstColumn: this.firstColumn,
+                secondColumn: this.secondColumn,
+                thirdColumn: this.thirdColumn
+            };
+            localStorage.setItem(storageKey, JSON.stringify(data));
+        },
+        updateTaskProgress(card) {
             const checkedCount = card.items.filter(item => item.checked).length;
             const progress = (checkedCount / card.items.length) * 100;
             card.isComplete = progress === 100;
@@ -59,49 +66,32 @@ let app = new Vue({
             if (card.isComplete) {
                 card.lastChecked = new Date().toLocaleString();
             }
-
             if (progress >= 50 && !card.isComplete) {
-
-                this.moveCardBetweenColumns(card, this.firstColumn, this.secondColumn);
+                this.moveTaskCardBetweenColumns(card, this.firstColumn, this.secondColumn);
             } else if (card.isComplete && this.secondColumn.includes(card)) {
-
-                this.moveCardBetweenColumns(card, this.secondColumn, this.thirdColumn);
+                this.moveTaskCardBetweenColumns(card, this.secondColumn, this.thirdColumn);
             }
 
             if (progress === 0 && this.secondColumn.length < 5) {
-
-                this.moveCardBetweenColumns(card, this.firstColumn, this.secondColumn);
+                this.moveTaskCardBetweenColumns(card, this.firstColumn, this.secondColumn);
             }
         },
-        deleteCard(index) {
+        removeTaskCard(index) {
             this.thirdColumn.splice(index, 1);
         },
-        moveCardBetweenColumns(card, fromColumn, toColumn) {
+        moveTaskCardBetweenColumns(card, fromColumn, toColumn) {
             const index = fromColumn.findIndex(c => c.id === card.id);
             if (index !== -1) {
-
                 if (toColumn === this.secondColumn && this.secondColumn.length >= 5) {
                     alert('Во втором столбце не может быть больше 5 карточек.');
                     return;
                 }
-
                 fromColumn.splice(index, 1);
                 toColumn.push(card);
-
-                if (fromColumn === this.firstColumn && toColumn === this.secondColumn) {
-                    this.disableCheckboxes(card);
-                }
             }
         },
 
-        disableCheckboxes(card) {
-
-            card.items.forEach(item => {
-                item.checked = true;
-            });
-        },
-
-        createCard() {
+        addNewTaskCard() {
             if (this.validateForm()) {
                 const newGroup = {
                     id: Date.now(),
@@ -133,7 +123,6 @@ let app = new Vue({
                     this.firstColumn.push(newGroup);
                     this.clearForm();
                 } else if (cardsWithFiftyProgress.length >= 5) {
-
                     this.firstColumn.forEach(card => {
                         card.isDisabled = true;
                     });
@@ -164,7 +153,4 @@ let app = new Vue({
             this.inputFor = null;
         }
     },
-    mounted() {
-        // this.checkBlockColumn();
-    }
 });
